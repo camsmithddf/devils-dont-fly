@@ -22,6 +22,29 @@
       <a href="../index.html#shop" class="btn">← Back to Shop</a>
     </div>
   </section>
+  
+<!-- STRIPE CHECKOUT BUTTON -->
+<button id="checkout-button" class="btn">Buy Now with Card</button>
+
+<!-- Stripe.js -->
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+  const stripe = Stripe("YOUR_PUBLISHABLE_KEY"); // Replace with your Stripe Publishable Key
+
+  document.getElementById("checkout-button").addEventListener("click", () => {
+    stripe.redirectToCheckout({
+      lineItems: [{ price: "YOUR_PRICE_ID", quantity: 1 }], // Replace with your Price ID
+      mode: "payment",
+      successUrl: "https://YOUR-WEBSITE-URL/success.html",
+      cancelUrl: "https://YOUR-WEBSITE-URL/products/hoodie.html",
+    })
+    .then((result) => {
+      if (result.error) {
+        alert(result.error.message);
+      }
+    });
+  });
+</script>
 
   <footer>
     <p>&copy; 2025 Devils Don’t Fly</p>
