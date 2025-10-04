@@ -23,28 +23,29 @@
     </div>
   </section>
   
-<!-- STRIPE CHECKOUT BUTTON -->
-<button id="checkout-button" class="btn">Buy Now with Card</button>
+<section class="product-detail">
+  <img src="../images/hoodie.jpg" alt="Blood Red Patch Hoodie">
+  <div class="details">
+    <h2>$80</h2>
+    <p>
+      The Blood Red Patch Hoodie is crafted from premium heavyweight cotton. 
+      Black base with striking blood-red accents, designed for ultimate streetwear style.
+    </p>
 
-<!-- Stripe.js -->
-<script src="https://js.stripe.com/v3/"></script>
-<script>
-  const stripe = Stripe("YOUR_PUBLISHABLE_KEY"); // Replace with your Stripe Publishable Key
+    <!-- PAYPAL BUY NOW BUTTON -->
+    <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+      <input type="hidden" name="cmd" value="_xclick">
+      <input type="hidden" name="business" value="YOUR-PAYPAL-EMAIL@example.com">
+      <input type="hidden" name="item_name" value="Blood Red Patch Hoodie">
+      <input type="hidden" name="amount" value="80.00">
+      <input type="hidden" name="currency_code" value="USD">
+      <input type="submit" value="Buy Now with PayPal" class="btn">
+    </form>
 
-  document.getElementById("checkout-button").addEventListener("click", () => {
-    stripe.redirectToCheckout({
-      lineItems: [{ price: "YOUR_PRICE_ID", quantity: 1 }], // Replace with your Price ID
-      mode: "payment",
-      successUrl: "https://YOUR-WEBSITE-URL/success.html",
-      cancelUrl: "https://YOUR-WEBSITE-URL/products/hoodie.html",
-    })
-    .then((result) => {
-      if (result.error) {
-        alert(result.error.message);
-      }
-    });
-  });
-</script>
+    <a href="../index.html#shop" class="btn">← Back to Shop</a>
+  </div>
+</section>
+
 
   <footer>
     <p>&copy; 2025 Devils Don’t Fly</p>
