@@ -1,23 +1,23 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>Joggers</title><link rel="stylesheet" href="../style.css"></head><body>
-<header class="subpage-hero"><h1>Blood Red Patch Joggers</h1><nav class="nav"><a href="../basket.html">Basket (<span id="cart-count">0</span>)</a></nav></header>
-<section class="product-detail">
-  <img src="../images/joggers.jpg" alt="Joggers">
-  <div class="details">
-    <h2>$70</h2>
-    <p>Comfy tapered joggers with bold red patch.</p>
-    <button class="btn" id="add-joggers">Add to Basket</button>
-    <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top" style="margin-top:12px;">
-      <input type="hidden" name="cmd" value="_cart">
-      <input type="hidden" name="business" value="YOUR-PAYPAL-EMAIL@example.com">
-      <input type="hidden" name="add" value="1">
-      <input type="hidden" name="item_name" value="Blood Red Patch Joggers">
-      <input type="hidden" name="amount" value="70.00">
-      <input type="hidden" name="currency_code" value="USD">
-      <input type="submit" value="Buy Now with PayPal" class="btn">
-    </form>
-    <a href="../index.html#shop" class="btn" style="margin-top:8px;display:inline-block">Back to Shop</a>
-  </div>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Blood Red Patch Joggers</title>
+  <link rel="stylesheet" href="../style.css">
+  <script src="../cart.js"></script>
+</head>
+<body>
+<header class="hero">
+  <h1>Blood Red Patch Joggers</h1>
+</header>
+<section class="product-detail" style="padding:20px;">
+  <img src="../images/joggers.jpg" alt="Joggers" style="max-width:300px;display:block;margin-bottom:20px;">
+  <p>Match your hoodie with our Blood Red Patch Joggers. Designed with comfort and edge in mind.</p>
+  <p><strong>$70</strong></p>
+  <button onclick="addToCart({id:'joggers1',name:'Blood Red Patch Joggers',price:7000,quantity:1})" class="btn">
+    Add to Basket
+  </button>
 </section>
-<script src="../cart.js"></script>
-</body></html>
+</body>
+</html>
