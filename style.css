@@ -1,12 +1,17 @@
-/* Minimal styling */
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:Arial,Helvetica,sans-serif;background:#000;color:#fff}
 .hero{padding:40px;text-align:center;background:#000}
 .hero h1{color:#ff004c;font-size:3rem;letter-spacing:2px}
-.btn{display:inline-block;padding:10px 18px;background:#ff004c;color:#fff;text-decoration:none;border-radius:4px}
+.btn{display:inline-block;padding:10px 18px;background:#ff004c;color:#fff;text-decoration:none;border-radius:4px;margin-top:10px}
 .nav{margin-top:10px}
 .products{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;padding:20px}
 .product{background:#111;padding:12px;border:1px solid #222}
 .product img{width:100%;height:auto;border-bottom:2px solid #ff004c}
 .product h3{color:#ff7fa8;margin:10px 0}
-footer{padding:20px;text-align:center;color:#777}
+footer{padding:20px;text-align:center;color:#777;background:#000}
+
+.tagline {margin: 10px 0;font-size: 1.2rem;color: #fff;}
+.intro {padding: 40px 20px;text-align: center;background: #111;color: #ddd;}
+.socials {margin-top: 10px;}
+.socials a {color: #ff004c;text-decoration: none;margin: 0 5px;}
+.socials a:hover {text-decoration: underline;}
