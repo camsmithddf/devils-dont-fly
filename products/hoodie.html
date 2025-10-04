@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>Hoodie</title><link rel="stylesheet" href="../style.css"></head><body>
+<header class="subpage-hero"><h1>Blood Red Patch Hoodie</h1><nav class="nav"><a href="../basket.html">Basket (<span id="cart-count">0</span>)</a></nav></header>
+<section class="product-detail">
+  <img src="../images/hoodie.jpg" alt="Hoodie">
+  <div class="details">
+    <h2>$80</h2>
+    <p>Premium heavyweight cotton hoodie with blood-red patch detail.</p>
+    <button class="btn" id="add-hoodie">Add to Basket</button>
+    <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top" style="margin-top:12px;">
+      <input type="hidden" name="cmd" value="_cart">
+      <input type="hidden" name="business" value="YOUR-PAYPAL-EMAIL@example.com">
+      <input type="hidden" name="add" value="1">
+      <input type="hidden" name="item_name" value="Blood Red Patch Hoodie">
+      <input type="hidden" name="amount" value="80.00">
+      <input type="hidden" name="currency_code" value="USD">
+      <input type="submit" value="Buy Now with PayPal" class="btn">
+    </form>
+
+    <button id="stripe-checkout" class="btn" style="margin-top:8px;">Buy with Card / Apple Pay</button>
+    <a href="../index.html#shop" class="btn" style="margin-top:8px;display:inline-block">Back to Shop</a>
+  </div>
+</section>
+
+<script src="../cart.js"></script>
+<script src="https://js.stripe.com/v3/"></script>
+<script>
+// Stripe checkout for single item (if you prefer)
+document.getElementById('stripe-checkout').addEventListener('click', function(){
+  // POST to backend to create a Stripe Checkout session for single item
+  fetch('/.netlify/functions/create-stripe-session', {
+    method: 'POST',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify({items:[{id:'hoodie',name:'Blood Red Patch Hoodie',price:8000,quantity:1}]})
+  }).then(res=>res.json()).then(data=>{
+    if(data.sessionUrl) window.location = data.sessionUrl;
+    else alert('Error creating checkout session');
+  }).catch(e=>{ alert('Network error'); });
+});
+</script>
+</body></html>
