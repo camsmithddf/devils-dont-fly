@@ -1,61 +1,78 @@
 <!DOCTYPE html>
-<html lang="en"><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/><title>Basket</title><link rel="stylesheet" href="style.css"></head><body>
-<header class="hero"><h1>Your Basket</h1><a href="index.html" class="btn">← Continue Shopping</a></header>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Basket</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="https://www.paypal.com/sdk/js?client-id=YOUR_PAYPAL_CLIENT_ID&currency=USD"></script>
+  <script src="https://js.stripe.com/v3/"></script>
+</head>
+<body>
+<header class="hero">
+  <h1>Your Basket</h1>
+  <a href="shop.html" class="btn">← Continue Shopping</a>
+</header>
+
 <section id="cart-contents" style="padding:20px;">
   <div id="items"></div>
   <div id="summary" style="margin-top:20px;"></div>
   <div id="checkout-buttons" style="margin-top:16px;"></div>
 </section>
+
 <script src="cart.js"></script>
 <script>
-// Render cart and attach checkout actions
+let total = 0;
 function renderCart(){ 
   const cart = JSON.parse(localStorage.getItem('ddf_cart')||'[]');
   const itemsDiv = document.getElementById('items');
   itemsDiv.innerHTML='';
-  let total = 0;
+  total = 0;
   cart.forEach((it,idx)=>{
     const row = document.createElement('div');
-    row.style.padding='10px'; row.style.borderBottom='1px solid #222';
-    row.innerHTML = `<strong>${it.name}</strong> — $${(it.price/100).toFixed(2)} x ${it.quantity} <button data-idx="${idx}" class="remove">Remove</button>`;
+    row.style.padding='10px'; 
+    row.style.borderBottom='1px solid #222';
+    row.innerHTML = `<strong>${it.name}</strong> — $${(it.price/100).toFixed(2)} x ${it.quantity} 
+                     <button data-idx="${idx}" class="remove">Remove</button>`;
     itemsDiv.appendChild(row);
     total += it.price * it.quantity;
   });
   document.getElementById('summary').innerHTML = `<h3>Total: $${(total/100).toFixed(2)}</h3>`;
-  const checkout = document.getElementById('checkout-buttons');
-  checkout.innerHTML = '';
-  if(cart.length===0){ checkout.innerHTML = '<p>Your basket is empty.</p>'; return;}
-  // PayPal Multi-Item: create form to submit to backend which will create PayPal order then redirect
-  const paypalBtn = document.createElement('button');
-  paypalBtn.className='btn'; paypalBtn.innerText='Checkout with PayPal';
-  paypalBtn.addEventListener('click', ()=>{
-    fetch('/.netlify/functions/create-paypal-order', {
-      method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({items:cart})
-    }).then(r=>r.json()).then(data=>{ if(data.approvalUrl) window.location = data.approvalUrl; else alert('PayPal error'); });
-  });
-  checkout.appendChild(paypalBtn);
+  
+  const checkoutDiv = document.getElementById('checkout-buttons');
+  if(cart.length===0){ 
+    checkoutDiv.innerHTML = '<p>Your basket is empty.</p>'; 
+    return;
+  }
 
-  // Stripe multi-item checkout
-  const stripeBtn = document.createElement('button');
-  stripeBtn.className='btn'; stripeBtn.innerText='Checkout with Card / Apple Pay';
-  stripeBtn.style.marginLeft='8px';
-  stripeBtn.addEventListener('click', ()=>{
-    fetch('/.netlify/functions/create-stripe-session', {
-      method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify({items:cart})
-    }).then(r=>r.json()).then(data=>{ if(data.sessionUrl) window.location = data.sessionUrl; else alert('Stripe error'); });
-  });
-  checkout.appendChild(stripeBtn);
+  checkoutDiv.innerHTML = `
+    <h3>Checkout Options</h3>
+    <div id="paypal-button-container"></div>
+    <button id="stripe-button" class="btn" style="margin-top:10px;">Pay with Card / Apple Pay</button>
+  `;
 
-  // remove handlers
-  document.querySelectorAll('.remove').forEach(btn=>btn.addEventListener('click', e=>{
-    const i = parseInt(e.target.dataset.idx);
-    cart.splice(i,1);
-    localStorage.setItem('ddf_cart', JSON.stringify(cart));
-    renderCart();
-    updateCartCount();
-  }));
+  // PayPal Button
+  paypal.Buttons({
+    createOrder: (data, actions) => {
+      return actions.order.create({
+        purchase_units: [{ amount: { value: (total/100).toFixed(2) } }]
+      });
+    },
+    onApprove: (data, actions) => {
+      return actions.order.capture().then(function(details) {
+        alert('Payment completed by ' + details.payer.name.given_name);
+        localStorage.removeItem('ddf_cart');
+        window.location.href = "index.html";
+      });
+    }
+  }).render('#paypal-button-container');
+
+  // Stripe placeholder
+  document.getElementById('stripe-button').addEventListener('click', async () => {
+    alert('Stripe Checkout requires Netlify deployment with serverless functions.');
+  });
 }
-
 renderCart();
 </script>
-</body></html>
+</body>
+</html>
